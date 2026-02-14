@@ -7,8 +7,10 @@ class BlogAdmin(admin.ModelAdmin):
     search_fields = ('title','author__username','Category__name','status')
     list_editable = ('is_featured','status')
      
-    
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name','created_at','id')
+    search_fields = ('name',)
 
 # Register your models here.
-admin.site.register(Category)
+admin.site.register(Category,CategoryAdmin)
 admin.site.register(Blog,BlogAdmin)

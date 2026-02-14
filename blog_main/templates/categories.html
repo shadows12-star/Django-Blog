@@ -1,5 +1,4 @@
-
-{%extends 'base.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
 
@@ -15,11 +14,11 @@
 
 {% endif %} 
 
-  {% endfor %}
+{% endfor %}
 <!--featured post-->
-<h3 class="text-uppercase text-warning" style="letter-spacing: 2px;" >Featured Posts</h3>
+<h3 class="text-uppercase text-warning" style="letter-spacing: 2px;" >Category {{categoryname}}</h3>
   
-
+{% if featured_posts %}
 <div class="row mb-2">
     {% for post in featured_posts %}
     {% if not forloop.first %}
@@ -34,27 +33,9 @@
       </div>
       {% endif %}
   {% endfor %}
-</div>
-{% if posts %}
-  <h3 class="text-uppercase text-warning" style="letter-spacing: 2px;" >Recent Articles</h3>
-  
+  {% else %}
+    <p class="text-muted">No posts found in this category.</p>
+    {% endif %}
 
-
- 
-   <div class="row mb-2">
-    {% for post in posts %}
-
-    <div class="col-md-6">
-      <div class="card border-0" >
-        <div class="card-body">
-          <h3>{{post.title}}</h3>
-          <small class="mb-1 text-muted">{{post.created_at| timesince}} ago | {{post.author}}</small>
-          <p class="card-text">{{post.short_description|truncatewords:20}}</p>
-        </div>
-      </div>
-      </div>
-
-  {% endfor %}
-</div>
-{% endif %}
+      
 {% endblock %}
