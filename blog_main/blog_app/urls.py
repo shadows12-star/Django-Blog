@@ -7,5 +7,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('home/',views.home,name='home'),
     path('categories/<int:category_id>/',views.category_posts,name='category_posts'),
+    
+    path('details/<slug:slug>/',views.blog_details,name='blog_details'),
+    path('search/',views.search,name='search'),
+   
    
 ]

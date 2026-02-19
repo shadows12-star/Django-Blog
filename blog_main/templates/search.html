@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <h2>Search Results for "{{keyword}}"</h2>
+            {% if posts %}
+                {% for post in posts %}
+                    <div class="card mb-4 border-0">
+                        <div class="card-body">
+                            <h3><a href="{% url 'blog_details' slug=post.slug %}" class="text-dark">{{post.title}}</a></h3>
+                            <small class="mb-1 text-muted">{{post.created_at| timesince}} ago | {{post.author}}</small>
+                            <p class="card-text">{{post.short_description|truncatewords:20}}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-muted
+">No results found for "{{keyword}}". Please try a different search term.</p>
+            {% endif %}
+{% endblock %}
