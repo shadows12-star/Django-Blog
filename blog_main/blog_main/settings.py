@@ -71,6 +71,7 @@ TEMPLATES = [
                 'blog_app.context_processors.get_categories',
                 'blog_app.context_processors.get_about',
                 'blog_app.context_processors.get_social_links',
+             
                 
             ],
         },

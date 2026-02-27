@@ -1,11 +1,14 @@
 from ast import keyword
+from itertools import count
 from django.shortcuts import get_object_or_404, redirect, render
 from . models import Blog,Category
 from django.db.models import Q
-from . forms import RegistrationForm
+from . forms import RegistrationForm,CommentForm
 from django.contrib.auth import authenticate, login as auth_login,logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.decorators import login_required
 # Create your views here.
+
 def home(request):
   
     featured_posts=Blog.objects.filter(is_featured=True).order_by('updated_at')[:5]
@@ -28,12 +31,31 @@ def category_posts(request,category_id):
         'categoryname':categoryname
     }
     return render(request,'categories.html',context)
+
 def blog_details(request,slug):
+    form=CommentForm()
     blog=get_object_or_404(Blog,slug=slug)
+    if request.method=='POST':
+        form=CommentForm(request.POST)
+        if form.is_valid():
+            
+            f1=form.save(commit=False)
+            f1.post=blog
+            f1.user=request.user
+            f1.save()
+           
+            return redirect('blog_details',slug=slug)
+    
+    comments=blog.comments_set.all().order_by('-created_at')[:3]
+    count=blog.comments_set.all().count()
     context={
-        'blog':blog
+        'blog':blog,
+        'comments':comments,
+        'form':form,
+        'count':count
     }
     return render(request,'blog_details.html',context)
+
 def search(request):
     keyword = request.GET.get('keyword')
 
@@ -75,7 +97,7 @@ def login(request):
             user=authenticate(username=username,password=password)
             if user is not None:
                 auth_login(request,user)
-                return redirect('dashboard')
+                return redirect('home')
     
     else:
         form=AuthenticationForm()

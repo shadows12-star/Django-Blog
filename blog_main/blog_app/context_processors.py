@@ -1,4 +1,6 @@
-from . models import Category,Blog,About,SocialLinks
+from xml.etree.ElementTree import Comment
+
+from . models import Category,Blog,About,SocialLinks, comments
 
 def get_categories(request):
     categories=Category.objects.all()
