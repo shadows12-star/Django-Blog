@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% if perms.auth.view_user %}
 <div class="row">
     <!----left sidebar---->
 
@@ -36,5 +37,10 @@
     </div>
     
 </div>
+{% else %}
+<div class="alert alert-danger text-center" role="alert">
+  You do not have permission to view this page.
+{% endif %}
+
 
 {% endblock content %}
