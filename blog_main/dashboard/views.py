@@ -2,8 +2,9 @@ from django.shortcuts import redirect, render
 from jupyterlab_server import slugify
 from blog_app.models import Blog,Category
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
     
-from .forms import CategoryForm,PostForm
+from .forms import CategoryForm,PostForm,Userform, edituserform, edituserform
 # Create your views here.
 @login_required(login_url='login')
 def dashboard(request):
@@ -76,3 +77,37 @@ def del_posts(request,post_id):
     post=Blog.objects.get(id=post_id)
     post.delete()
     return redirect('posts')
+def users(request):
+    users=User.objects.all()
+    context={
+        'users':users
+    }
+
+    return render(request,'dashboard/users.html',context)
+def add_users(request):
+    if request.method=='POST':
+        form=Userform(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('users')
+    form=Userform()
+    context={
+        'form':form
+    }
+    return render(request,'dashboard/add_users.html',context)
+def del_users(request,user_id):
+    user=User.objects.get(id=user_id)
+    user.delete()
+    return redirect('users')
+def edit_users(request,user_id):
+    user=User.objects.get(id=user_id)
+    form=edituserform(instance=user)
+    if request.method=='POST':
+        form=edituserform(request.POST,instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('users')
+    context={
+        'form':form
+    }
+    return render(request,'dashboard/edit_users.html',context)
