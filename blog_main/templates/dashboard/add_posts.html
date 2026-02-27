@@ -2,11 +2,11 @@
 
 {% block content %}
 {% load crispy_forms_tags %}
-<H2>Edit Category</H2>
+<H2>Add New Blog</H2>
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form|crispy }}
-    <button type="submit" class="btn btn-sm btn-warning">Update Category</button>
+    <button type="submit" class="btn btn-sm btn-warning">Add Blog</button>
     <br>
 </form>
 
